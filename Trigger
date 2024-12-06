@@ -1,0 +1,19 @@
+CREATE TRIGGER BlockUserLogin
+ON ALL SERVER
+FOR LOGON
+AS
+BEGIN
+
+    DECLARE @MyClientIP NVARCHAR(100);
+    DECLARE @MyClientLoginName NVARCHAR(100);  
+
+
+    set @MyClientIP = Cast(CONNECTIONPROPERTY('Clinet_net_Address') as nvarchar(100))
+    set @MyClientLoginName= upper(SUSER_NAME());
+
+       if @MyClientLoginName in (N'Test') and @MyClientIP <> N'192.168.168.31'
+
+	   Rollback;
+	   
+END;
+GO
